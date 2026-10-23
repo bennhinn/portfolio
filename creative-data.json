@@ -1,0 +1,202 @@
+[
+  {
+    "id": "work-00",
+    "title": "TUMAINI Scholarship",
+    "category": "Community",
+    "subtitle": "Scholarship campaign communication",
+    "src": "/images/creative/work-00.webp",
+    "thumb": "/images/creative/work-00-thumb.webp",
+    "featured": true,
+    "kind": "image"
+  },
+  {
+    "id": "work-01",
+    "title": "Youth Hangout — Rooted & Fruitful",
+    "category": "Events",
+    "subtitle": "Youth event promotion",
+    "src": "/images/creative/work-01.webp",
+    "thumb": "/images/creative/work-01-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-02",
+    "title": "MCC Exhibition",
+    "category": "Events",
+    "subtitle": "Community exhibition campaign",
+    "src": "/images/creative/work-02.webp",
+    "thumb": "/images/creative/work-02-thumb.webp",
+    "featured": true,
+    "kind": "image"
+  },
+  {
+    "id": "work-03",
+    "title": "Service Host Training",
+    "category": "Community",
+    "subtitle": "Volunteer training announcement",
+    "src": "/images/creative/work-03.webp",
+    "thumb": "/images/creative/work-03-thumb.webp",
+    "featured": true,
+    "kind": "image"
+  },
+  {
+    "id": "work-04",
+    "title": "A Fresh Start",
+    "category": "Campaigns",
+    "subtitle": "New sermon series identity",
+    "src": "/images/creative/work-04.webp",
+    "thumb": "/images/creative/work-04-thumb.webp",
+    "featured": true,
+    "kind": "image"
+  },
+  {
+    "id": "work-05",
+    "title": "2025 Crossover",
+    "category": "Worship",
+    "subtitle": "Year-end celebration campaign",
+    "src": "/images/creative/work-05.webp",
+    "thumb": "/images/creative/work-05-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-06",
+    "title": "Wednesday Prayers",
+    "category": "Worship",
+    "subtitle": "Worship schedule announcement",
+    "src": "/images/creative/work-06.webp",
+    "thumb": "/images/creative/work-06-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-07",
+    "title": "Plug-In 2025",
+    "category": "Community",
+    "subtitle": "Discipleship programme announcement",
+    "src": "/images/creative/work-07.webp",
+    "thumb": "/images/creative/work-07-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-08",
+    "title": "Youth Hangout — Form in Christ",
+    "category": "Events",
+    "subtitle": "Youth gathering campaign",
+    "src": "/images/creative/work-08.webp",
+    "thumb": "/images/creative/work-08-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-09",
+    "title": "Monthly Prayer & Fasting",
+    "category": "Worship",
+    "subtitle": "Prayer event announcement",
+    "src": "/images/creative/work-09.webp",
+    "thumb": "/images/creative/work-09-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-10",
+    "title": "Baptism",
+    "category": "Community",
+    "subtitle": "Baptism information design",
+    "src": "/images/creative/work-10.webp",
+    "thumb": "/images/creative/work-10-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-11",
+    "title": "Midweek Manna",
+    "category": "Worship",
+    "subtitle": "Online gathering announcement",
+    "src": "/images/creative/work-11.webp",
+    "thumb": "/images/creative/work-11-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-13",
+    "title": "MCC Kids — Vacation Bible School",
+    "category": "Community",
+    "subtitle": "Children’s programme promotion",
+    "src": "/images/creative/work-13.webp",
+    "thumb": "/images/creative/work-13-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-14",
+    "title": "Welcome to Church",
+    "category": "Community",
+    "subtitle": "Service information poster",
+    "src": "/images/creative/work-14.webp",
+    "thumb": "/images/creative/work-14-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-15",
+    "title": "HURU — A Night of Worship",
+    "category": "Worship",
+    "subtitle": "Worship event campaign",
+    "src": "/images/creative/work-15.webp",
+    "thumb": "/images/creative/work-15-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-16",
+    "title": "Child Dedication",
+    "category": "Community",
+    "subtitle": "Family ministry announcement",
+    "src": "/images/creative/work-16.webp",
+    "thumb": "/images/creative/work-16-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-17",
+    "title": "Mission Momentum Africa",
+    "category": "Campaigns",
+    "subtitle": "Missions campaign visual",
+    "src": "/images/creative/work-17.webp",
+    "thumb": "/images/creative/work-17-thumb.webp",
+    "featured": true,
+    "kind": "image"
+  },
+  {
+    "id": "work-18",
+    "title": "Karibu April",
+    "category": "Events",
+    "subtitle": "Welcome event artwork",
+    "src": "/images/creative/work-18.webp",
+    "thumb": "/images/creative/work-18-thumb.webp",
+    "featured": false,
+    "kind": "image"
+  },
+  {
+    "id": "work-19",
+    "title": "Easter with 100 Families",
+    "category": "Community",
+    "subtitle": "Community outreach announcement",
+    "src": "/images/creative/work-19.webp",
+    "thumb": "/images/creative/work-19-thumb.webp",
+    "featured": true,
+    "kind": "image"
+  },
+  {
+    "id": "welcome-motion",
+    "title": "Welcome to Church — Motion",
+    "category": "Motion",
+    "subtitle": "Five-second vertical welcome video",
+    "src": "/images/creative/welcome-to-church.mp4",
+    "thumb": "/images/creative/welcome-to-church-poster.webp",
+    "featured": false,
+    "kind": "video"
+  }
+]

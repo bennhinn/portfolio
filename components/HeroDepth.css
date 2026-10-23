@@ -1,0 +1,140 @@
+/* Scoped enhancement for the current hero. Keep your existing globals.css. */
+.hero.hero--depth .hero-frame {
+  --hero-depth-x: 0px;
+  --hero-depth-y: 0px;
+  --hero-light-x: 65%;
+  --hero-light-y: 35%;
+}
+
+.hero--depth .hero-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(ellipse at var(--hero-light-x) var(--hero-light-y), #70d6ff0d, transparent 48%);
+}
+
+.hero--depth .hero-atmosphere > span {
+  position: absolute;
+  width: 48%;
+  height: 48%;
+  border-radius: 50%;
+  opacity: .55;
+  background: radial-gradient(ellipse, #37c6ff20, transparent 68%);
+  transform: translate3d(var(--hero-depth-x), var(--hero-depth-y), 0);
+  transition: transform 900ms cubic-bezier(.2, .65, .3, 1);
+}
+
+.hero--depth .hero-atmosphere > span:first-child { top: -22%; right: 7%; }
+.hero--depth .hero-atmosphere > span:last-child {
+  right: -22%;
+  bottom: -10%;
+  background: radial-gradient(ellipse, #627bff25, transparent 68%);
+}
+
+/* An informational aside: no pointer cursor, arrow, hover lift or button chrome. */
+.hero.hero--depth .side-card.hero-perspective {
+  min-height: 0;
+  padding: 28px 25px 23px;
+  border: 0;
+  border-radius: 24px 24px 28px 8px;
+  background: linear-gradient(145deg, #29465d8f, #0a2039bf 65%, #102b43d9);
+  box-shadow: 0 24px 55px -20px #000c1cd9, inset 0 1px 0 #e1f7ff24;
+  backdrop-filter: blur(24px) saturate(115%);
+  -webkit-backdrop-filter: blur(24px) saturate(115%);
+  color: #f1f6fc;
+  cursor: default;
+  animation: none;
+  transform: translate3d(var(--hero-depth-x), var(--hero-depth-y), 0);
+  transition: transform 900ms cubic-bezier(.2, .65, .3, 1);
+}
+
+.hero.hero--depth .side-card.hero-perspective::before {
+  inset: 0;
+  height: auto;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at 5% 0%, #a9e6ff12, transparent 62%);
+  pointer-events: none;
+}
+
+.hero--depth .hero-perspective-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 26px;
+  color: #bdcfdf;
+  font-size: 9px;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.hero--depth .hero-perspective-label > span {
+  width: 16px;
+  height: 1px;
+  background: #8fbed4;
+}
+
+.hero.hero--depth .hero-perspective h2 {
+  margin: 0;
+  font-size: clamp(25px, 2.2vw, 32px);
+  line-height: 1.08;
+  font-weight: 500;
+  letter-spacing: -.045em;
+}
+
+.hero--depth .hero-perspective h2 em {
+  color: #afe1ef;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+}
+
+.hero.hero--depth .hero-perspective p {
+  position: relative;
+  margin: 20px 0 0;
+  color: #bdcedc;
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.hero--depth .hero-perspective-signature { margin-top: 27px; }
+.hero--depth .hero-perspective-signature svg { display: block; width: 100%; height: 30px; }
+.hero--depth .hero-perspective-signature path:first-child { stroke: #a0d4e0; stroke-width: 1; opacity: .65; }
+.hero--depth .hero-perspective-signature path:last-child { stroke: #c4e5f2; stroke-width: .5; opacity: .13; }
+.hero--depth .hero-perspective-signature span {
+  display: block;
+  margin-top: 10px;
+  color: #a2b9cc;
+  font-size: 9px;
+  letter-spacing: .045em;
+}
+
+@media (min-width: 851px) {
+  .hero.hero--depth .hero-shine {
+    background: linear-gradient(90deg, #03102328, transparent 52%), linear-gradient(0deg, #020d2440, transparent 25%);
+  }
+  .hero.hero--depth .orb { opacity: .8; }
+}
+
+@media (min-width: 851px) and (max-width: 1100px) {
+  .hero.hero--depth .side-card.hero-perspective { padding: 21px 18px; }
+  .hero--depth .hero-perspective-label { font-size: 8px; margin-bottom: 19px; }
+  .hero.hero--depth .hero-perspective h2 { font-size: 25px; }
+  .hero.hero--depth .hero-perspective p { font-size: 11px; margin-top: 16px; }
+  .hero--depth .hero-perspective-signature { margin-top: 17px; }
+}
+
+@media (max-width: 850px) {
+  .hero.hero--depth .side-card.hero-perspective { display: none; }
+  .hero--depth .hero-atmosphere { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero.hero--depth .side-card.hero-perspective,
+  .hero--depth .hero-atmosphere > span { transform: none; transition: none; }
+  .hero.hero--depth .halo-breath,
+  .hero.hero--depth .orb { animation: none; }
+}

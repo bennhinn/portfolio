@@ -1,0 +1,2671 @@
+<!doctype html>
+<html lang="en">
+
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; form-action 'none'"><title>Umoja+ Lifeline SOS prototype</title><style>:root {
+  --black: #121212;
+  --green: #1BAA5B;
+  --gold: #F6A700;
+  --blue: #2B88D8;
+  --coral: #E85D5A;
+  --sand: #F8F4EE;
+  --muted: #666;
+  --bg: #ffffff;
+  --card: #ffffff;
+  --line: #EAEAEA;
+}
+
+/* Enhanced animations and effects */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes flowMoney {
+  0% {
+    transform: translateX(0) scale(0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(200px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Base styles - Mobile First Approach */
+body {
+  margin: 0;
+  font: 16px/1.5 Inter, 'Segoe UI', Roboto, Arial, sans-serif;
+  color: var(--black);
+  background: var(--bg);
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Toast Notifications - Enhanced */
+#toastContainer {
+  position: fixed;
+  top: 80px;
+  right: 8px;
+  left: 8px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  opacity: 0;
+  transform: translateX(100%);
+  animation: slideIn 0.3s forwards, fadeOut 0.3s 3.7s forwards;
+  pointer-events: all;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.toast.info {
+  background: var(--blue);
+}
+
+.toast.success {
+  background: var(--green);
+}
+
+.toast.warn {
+  background: var(--gold);
+}
+
+.toast.bad {
+  background: var(--coral);
+}
+
+/* Story Callouts - Enhanced */
+#storyContainer {
+  position: fixed;
+  top: 120px;
+  left: 8px;
+  right: 8px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.story-callout {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s 4.5s forwards;
+  max-width: 100%;
+  word-wrap: break-word;
+  pointer-events: all;
+}
+
+.story-callout.highlight {
+  background: var(--gold);
+  animation: pulse 0.5s ease-in-out 3;
+  border-left: 4px solid var(--green);
+}
+
+/* Header - Enhanced Mobile First */
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  order: 1;
+}
+
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--green), var(--gold));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.brand-text h1 {
+  margin: 0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.brand-text p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  white-space: nowrap;
+  display: none;
+}
+
+.user-badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--green);
+  background: var(--sand);
+  padding: 3px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  order: 2;
+}
+
+.actions {
+  order: 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: 100%;
+  max-width: 320px;
+}
+
+/* Impact Banner - Enhanced */
+.impact-banner {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 8px;
+  background: linear-gradient(135deg, var(--green), var(--gold));
+  color: #fff;
+  animation: slideIn 0.5s forwards;
+}
+
+.impact-stat {
+  text-align: center;
+  padding: 8px 4px;
+}
+
+.impact-number {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.impact-label {
+  font-size: 9px;
+  opacity: 0.9;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+/* Tabs - Enhanced Mobile */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  position: sticky;
+  top: 80px;
+  z-index: 99;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  border: none;
+  background: var(--sand);
+  color: var(--black);
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: max-content;
+  flex-shrink: 0;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab.active {
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+}
+
+.tab:hover:not(.active) {
+  background: #E7F6EE;
+}
+
+/* Main Content */
+main {
+  padding: 12px 8px;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.view {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.view.active {
+  display: block;
+}
+
+/* Story Headers */
+.story-header {
+  text-align: center;
+  margin-bottom: 12px;
+  padding: 12px 8px;
+  background: var(--sand);
+  border-radius: 8px;
+}
+
+.story-header h2 {
+  margin: 0 0 4px;
+  color: var(--green);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.story-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+/* Grid System - Enhanced Mobile First */
+.grid {
+  display: grid;
+  gap: 8px;
+}
+
+.grid.two {
+  grid-template-columns: 1fr;
+}
+
+.grid.three {
+  grid-template-columns: 1fr;
+}
+
+.grid.four {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Cards - Enhanced */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 8px;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  color: var(--green);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+/* Forms - Enhanced Touch Friendly */
+label {
+  display: block;
+  font-weight: 600;
+  color: var(--black);
+  margin: 8px 0 4px;
+  font-size: 12px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  outline: none;
+  background: #F7FBFF;
+  transition: border-color 0.2s ease;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(27, 170, 91, 0.1);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.field-group {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Chips - Enhanced Touch Friendly */
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chips.wrap {
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--black);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: max-content;
+}
+
+.chip.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+  font-weight: 700;
+}
+
+.chip:hover:not(.active) {
+  background: var(--sand);
+  border-color: var(--green);
+}
+
+/* Buttons - Enhanced Touch Friendly */
+.btn {
+  background: linear-gradient(135deg, var(--green), var(--gold));
+  color: #fff;
+  border: none;
+  padding: 10px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 11px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 40px;
+  min-width: 44px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(27, 170, 91, 0.3);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+
+.btn.outline {
+  background: #fff;
+  color: var(--black);
+  border: 1px solid var(--line);
+}
+
+.btn.large {
+  padding: 16px 20px;
+  font-size: 14px;
+}
+
+/* Voice control indicators */
+.btn-active {
+  background: var(--coral) !important;
+  animation: pulse 1s infinite;
+}
+
+.voice-on {
+  background: var(--green) !important;
+  color: white !important;
+}
+
+.voice-off {
+  background: var(--coral) !important;
+  color: white !important;
+}
+
+.voice-on::before {
+  content: "🎙️ ";
+}
+
+.voice-off::before {
+  content: "🔇 ";
+}
+
+/* Mobile Phone Mockup - Enhanced */
+.ussd-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.mobile-mockup {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+  width: 100%;
+}
+
+.phone-frame {
+  width: 240px;
+  background: #1F2937;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.phone-screen {
+  background: #000;
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 8px;
+  min-height: 160px;
+}
+
+.phone-status {
+  color: #00FF00;
+  font-size: 8px;
+  text-align: center;
+  margin-bottom: 6px;
+  font-family: monospace;
+}
+
+.ussd-display {
+  background: #000;
+  color: #00FF00;
+  font-family: monospace;
+  font-size: 11px;
+  white-space: pre-wrap;
+  min-height: 120px;
+  line-height: 1.4;
+}
+
+.phone-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.phone-btn {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 10px;
+}
+
+.phone-btn.secondary {
+  background: var(--coral);
+}
+
+.phone-keypad {
+  margin-top: 6px;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.key {
+  background: #374151;
+  color: #fff;
+  text-align: center;
+  padding: 8px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  font-size: 12px;
+  transition: background 0.1s ease;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.key:hover {
+  background: #4B5563;
+}
+
+.key:active {
+  background: #6B7280;
+}
+
+/* USSD Guide */
+.ussd-guide {
+  flex: 1;
+  min-width: 250px;
+  margin-top: 16px;
+}
+
+.ussd-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ussd-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step-content strong {
+  color: var(--green);
+}
+
+/* Wallet */
+.wallet-features {
+  margin-top: 12px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* SMS Mockup */
+.sms-mockup {
+  margin-top: 16px;
+  background: #F0F9FF;
+  border: 1px solid var(--blue);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sms-header {
+  background: var(--blue);
+  color: #fff;
+  padding: 8px 12px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.sms-body {
+  padding: 12px;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Queue and Lists */
+.queue-filters {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.filter-btn.active {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.list .item {
+  background: var(--sand);
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.list .item:hover {
+  background: #E7F6EE;
+  border-color: var(--green);
+}
+
+.list .item.sel {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px rgba(27, 170, 91, 0.15);
+  background: #F0F9FF;
+}
+
+/* Priority badges */
+.badge {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 11px;
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-right: 6px;
+}
+
+.badge.A {
+  background: #EF4444;
+}
+
+.badge.B {
+  background: #F59E0B;
+}
+
+.badge.C {
+  background: #3B82F6;
+}
+
+/* Responder Grid */
+.responder-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.responder-card {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.responder-card.selected {
+  border-color: var(--green);
+  background: #F0F9FF;
+}
+
+.responder-card:hover {
+  border-color: var(--green);
+}
+
+/* Two-Stage Dispatch */
+.two-stage-option {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--sand);
+  border-radius: 8px;
+}
+
+/* Maps */
+.assignment-map,
+.equity-map {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #F8FAFC;
+}
+
+.case-details {
+  margin-top: 12px;
+}
+
+.case-details div {
+  margin-bottom: 4px;
+}
+
+/* Event Log */
+.log-title {
+  margin: 16px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.event-log {
+  font-size: 12px;
+  color: var(--muted);
+  list-style: none;
+  padding: 0;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.event-log li {
+  padding: 4px 0;
+  border-bottom: 1px solid #F0F0F0;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Incentive Tracker */
+.incentive-tracker {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--sand);
+  border-radius: 8px;
+}
+
+.incentive-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.incentive-item {
+  text-align: center;
+}
+
+.incentive-amount {
+  display: block;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.incentive-label {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Route Info */
+.route-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.route-stat {
+  text-align: center;
+}
+
+.route-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Road Status */
+.road-status {
+  margin-top: 16px;
+}
+
+.road-status h4 {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+/* Provider Portal */
+.lookup-section {
+  margin-bottom: 16px;
+}
+
+.admit-section {
+  margin: 16px 0;
+}
+
+.funds-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--green);
+  color: #fff;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.funds-icon {
+  font-size: 24px;
+}
+
+.funds-title {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.funds-amount {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.funds-source {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.admit-btn {
+  width: 100%;
+}
+
+/* KPI Cards - Enhanced */
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 8px;
+  text-align: center;
+  transition: transform 0.2s ease;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.kpi-card:hover {
+  transform: translateY(-1px);
+}
+
+.kpi-icon {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.kpi-content {}
+
+.kpi-label {
+  font-size: 9px;
+  color: var(--muted);
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.kpi-num {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--green);
+  margin: 4px 0;
+  line-height: 1;
+}
+
+.kpi-target {
+  font-size: 8px;
+  color: var(--muted);
+  line-height: 1.1;
+}
+
+/* Pools */
+.pools-grid {
+  margin-bottom: 16px;
+}
+
+.pools-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.pool-card {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--sand);
+}
+
+.pool-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.pool-balance {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.pool-rules {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.funding-note {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--sand);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* Tables - Enhanced Mobile */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  overflow-x: auto;
+  display: block;
+  white-space: nowrap;
+}
+
+.table thead,
+.table tbody {
+  display: table;
+  width: 100%;
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid var(--line);
+  padding: 6px 4px;
+  text-align: left;
+  min-width: 60px;
+}
+
+.table th {
+  font-size: 9px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Ledger */
+.ledger-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ledger-search {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.ledger-search input {
+  width: 150px;
+}
+
+.ledger-integrity {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.integrity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--green);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.integrity-note {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Animations for ledger entries */
+.ledger-row.new {
+  animation: pulse 0.5s ease-out;
+  background: var(--sand);
+}
+
+/* Tooltips */
+.tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+  display: none;
+  z-index: 1000;
+}
+
+/* Status indicators */
+.status {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status.ok {
+  color: var(--green);
+}
+
+.status.warn {
+  color: var(--gold);
+}
+
+.status.bad {
+  color: var(--coral);
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Footer */
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  font-size: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+  text-align: center;
+}
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.large {
+  font-size: 18px !important;
+}
+
+/* Demo-specific styles */
+.story-callout.highlight {
+  background: var(--gold) !important;
+  font-size: 14px;
+  padding: 12px 16px;
+  animation: pulse 0.5s ease-in-out 3;
+  border-left: 4px solid var(--green);
+}
+
+.money-particle {
+  animation: flowMoney 1.5s ease-out forwards;
+}
+
+.demo-comparison * {
+  font-family: inherit;
+}
+
+/* Responsive demo comparison modal */
+.demo-comparison div[style*="position: fixed"] {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: white !important;
+  border: 3px solid var(--green) !important;
+  border-radius: 12px !important;
+  padding: 16px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  z-index: 2000 !important;
+  min-width: 280px !important;
+  max-width: 90vw !important;
+  max-height: 85vh !important;
+  overflow-y: auto !important;
+}
+
+/* Responsive Breakpoints */
+
+/* Small Mobile - 480px and up */
+@media (min-width: 480px) {
+  .actions {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 100%;
+  }
+
+  .actions .btn {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+
+  .grid.four {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .kpi-card {
+    padding: 16px 12px;
+    min-height: 100px;
+  }
+
+  .kpi-icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .kpi-num {
+    font-size: 22px;
+  }
+
+  .impact-banner {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 12px 8px;
+  }
+
+  .impact-number {
+    font-size: 20px;
+  }
+
+  .impact-label {
+    font-size: 10px;
+  }
+
+  .ussd-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .mobile-mockup {
+    margin: 0;
+  }
+
+  .ussd-guide {
+    margin-top: 0;
+  }
+}
+
+/* Tablet - 768px and up */
+@media (min-width: 768px) {
+  .app-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+  }
+
+  .brand {
+    order: 1;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .brand-text h1 {
+    font-size: 18px;
+  }
+
+  .brand-text p {
+    display: block;
+    font-size: 12px;
+  }
+
+  .user-badge {
+    order: 2;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .actions {
+    order: 3;
+    display: flex;
+    gap: 8px;
+    width: auto;
+    max-width: none;
+  }
+
+  .actions .btn {
+    font-size: 14px;
+    padding: 10px 16px;
+    min-height: 44px;
+  }
+
+  .impact-banner {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 12px 16px;
+  }
+
+  .impact-number {
+    font-size: 24px;
+  }
+
+  .impact-label {
+    font-size: 11px;
+  }
+
+  .tabs {
+    top: 65px;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .tab {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  main {
+    padding: 16px;
+  }
+
+  .grid.two {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .story-header {
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  .story-header h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .story-header p {
+    font-size: 14px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .phone-frame {
+    width: 280px;
+    padding: 16px;
+  }
+
+  .phone-screen {
+    padding: 12px;
+    min-height: 200px;
+  }
+
+  .ussd-display {
+    font-size: 14px;
+    min-height: 150px;
+  }
+
+  .table {
+    font-size: 13px;
+    display: table;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 6px;
+  }
+
+  .app-footer {
+    font-size: 13px;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .assignment-map,
+  .equity-map {
+    height: 250px;
+  }
+
+  .incentive-grid {
+    gap: 12px;
+  }
+
+  .route-info {
+    gap: 16px;
+  }
+
+  .pools-display {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  #toastContainer {
+    right: 16px;
+    left: auto;
+    max-width: 400px;
+  }
+
+  #storyContainer {
+    left: 16px;
+    right: auto;
+    max-width: 400px;
+  }
+
+  .ledger-controls {
+    flex-wrap: nowrap;
+  }
+
+  .ledger-search {
+    margin-left: auto;
+  }
+
+  .ledger-search input {
+    width: 200px;
+  }
+}
+
+/* Desktop - 1024px and up */
+@media (min-width: 1024px) {
+  .grid.three {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .grid.four {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .incentive-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .route-info {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Large Desktop - 1200px and up */
+@media (min-width: 1200px) {
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .app-header {
+    padding: 16px 20px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .btn {
+    min-height: 48px;
+  }
+
+  .chip {
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+
+  .tab {
+    min-height: 40px;
+    padding: 10px 12px;
+  }
+
+  .btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .chip:hover:not(.active) {
+    background: #fff;
+    border-color: var(--line);
+  }
+
+  .tab:hover:not(.active) {
+    background: var(--sand);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Enhanced Visual Effects CSS - Add to your styles.css */
+
+/* Speaking indicator animation */
+.speaking-animation {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.speaking-animation .wave {
+  width: 3px;
+  height: 16px;
+  background: white;
+  border-radius: 2px;
+  animation: speakingWave 1s ease-in-out infinite;
+}
+
+.speaking-animation .wave:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.speaking-animation .wave:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.speaking-animation .wave:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+@keyframes speakingWave {
+
+  0%,
+  100% {
+    height: 16px;
+  }
+
+  50% {
+    height: 8px;
+  }
+}
+
+/* Slide animations */
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* Wave slide effect */
+@keyframes waveSlide {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+/* Floating particles */
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0) rotate(0deg);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translateY(-20px) scale(1) rotate(90deg);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translateY(-100px) scale(1.2) rotate(270deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-150px) scale(0) rotate(360deg);
+  }
+}
+
+/* Enhanced money flow */
+@keyframes enhancedMoneyFlow {
+  0% {
+    transform: translateX(0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+
+  50% {
+    transform: translateX(100px) scale(1.2) rotate(180deg);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translateX(200px) scale(1) rotate(315deg);
+  }
+
+  100% {
+    transform: translateX(250px) scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Enhanced final impact modal */
+.demo-comparison .modal-backdrop {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(5px) !important;
+  z-index: 1999 !important;
+}
+
+.demo-comparison .final-impact-modal {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) scale(0.8) !important;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa) !important;
+  border: 3px solid var(--green) !important;
+  border-radius: 20px !important;
+  padding: 30px !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3) !important;
+  z-index: 2000 !important;
+  min-width: 320px !important;
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  opacity: 0 !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.demo-comparison .modal-header {
+  text-align: center !important;
+  margin-bottom: 25px !important;
+}
+
+.demo-comparison .modal-header h2 {
+  color: var(--green) !important;
+  margin: 0 0 10px 0 !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+}
+
+.demo-comparison .celebration-emoji {
+  font-size: 24px !important;
+  animation: bounce 1s ease-in-out infinite !important;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.demo-comparison .comparison-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 20px !important;
+  margin-bottom: 25px !important;
+}
+
+.demo-comparison .before-section,
+.demo-comparison .after-section {
+  padding: 20px !important;
+  border-radius: 12px !important;
+  text-align: center !important;
+}
+
+.demo-comparison .before-section {
+  background: linear-gradient(135deg, #fef2f2, #fee2e2) !important;
+  border: 2px solid #fca5a5 !important;
+}
+
+.demo-comparison .after-section {
+  background: linear-gradient(135deg, #f0f9ff, #ecfdf5) !important;
+  border: 2px solid #86efac !important;
+}
+
+.demo-comparison .before-section h3 {
+  color: var(--coral) !important;
+  margin: 0 0 15px 0 !important;
+  font-size: 16px !important;
+}
+
+.demo-comparison .after-section h3 {
+  color: var(--green) !important;
+  margin: 0 0 15px 0 !important;
+  font-size: 16px !important;
+}
+
+.demo-comparison .impact-item {
+  margin: 8px 0 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.demo-comparison .results-section {
+  text-align: center !important;
+  padding: 20px !important;
+  background: linear-gradient(135deg, var(--green), var(--gold)) !important;
+  color: white !important;
+  border-radius: 12px !important;
+  margin-bottom: 20px !important;
+}
+
+.demo-comparison .results-section h3 {
+  margin: 0 0 20px 0 !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+}
+
+.demo-comparison .results-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 15px !important;
+}
+
+.demo-comparison .result-item {
+  text-align: center !important;
+}
+
+.demo-comparison .result-number {
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  margin-bottom: 5px !important;
+  font-family: 'Courier New', monospace !important;
+}
+
+.demo-comparison .result-label {
+  font-size: 12px !important;
+  opacity: 0.9 !important;
+  font-weight: 600 !important;
+}
+
+.demo-comparison .tagline-section {
+  text-align: center !important;
+  margin-bottom: 25px !important;
+}
+
+.demo-comparison .tagline-section h4 {
+  color: var(--green) !important;
+  margin: 0 0 8px 0 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+.demo-comparison .tagline-section p {
+  margin: 0 !important;
+  color: var(--muted) !important;
+  font-size: 14px !important;
+}
+
+.demo-comparison .complete-btn {
+  width: 100% !important;
+  padding: 15px !important;
+  background: linear-gradient(135deg, var(--green), var(--gold)) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.demo-comparison .complete-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(27, 170, 91, 0.4) !important;
+}
+
+/* Responsive modal */
+@media (min-width: 768px) {
+  .demo-comparison .final-impact-modal {
+    min-width: 600px !important;
+    max-width: 800px !important;
+    padding: 40px !important;
+  }
+
+  .demo-comparison .comparison-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .demo-comparison .results-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+
+  .demo-comparison .modal-header h2 {
+    font-size: 28px !important;
+  }
+
+  .demo-comparison .result-number {
+    font-size: 32px !important;
+  }
+}
+
+/* Enhanced transitions for views */
+.view {
+  transition: all 0.3s ease-out !important;
+}
+
+.view:not(.active) {
+  opacity: 0 !important;
+  transform: translateX(-20px) !important;
+}
+
+.view.active {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+/* 3D button effects */
+.btn {
+  transform-style: preserve-3d !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 25px rgba(27, 170, 91, 0.3) !important;
+}
+
+.btn:active {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 5px 15px rgba(27, 170, 91, 0.2) !important;
+}
+
+/* Card 3D effects */
+.card {
+  transform-style: preserve-3d !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card:hover {
+  transform: translateY(-5px) rotateY(2deg) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* KPI card enhancements */
+.kpi-card {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.kpi-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -50% !important;
+  left: -50% !important;
+  width: 200% !important;
+  height: 200% !important;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent) !important;
+  transform: rotate(45deg) !important;
+  transition: all 0.6s ease !important;
+  opacity: 0 !important;
+}
+
+.kpi-card:hover::before {
+  opacity: 1 !important;
+  animation: shimmer 1s ease-out !important;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Success celebration styles */
+.success-wave {
+  background: linear-gradient(45deg,
+      rgba(27, 170, 91, 0.2),
+      rgba(246, 167, 0, 0.2),
+      rgba(27, 170, 91, 0.2)) !important;
+}
+
+/*
+/* ElevenLabs Integration Styles - Add to your styles.css */
+
+/* API Key Setup Modal */
+.api-key-modal .modal-backdrop {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(5px) !important;
+  z-index: 9999 !important;
+}
+
+.api-key-modal .api-key-form {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: white !important;
+  border: 3px solid var(--blue) !important;
+  border-radius: 16px !important;
+  padding: 30px !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3) !important;
+  z-index: 10000 !important;
+  min-width: 320px !important;
+  max-width: 500px !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+}
+
+.api-key-modal h3 {
+  margin: 0 0 15px 0 !important;
+  color: var(--blue) !important;
+  font-size: 20px !important;
+  text-align: center !important;
+}
+
+.api-key-modal p {
+  margin: 0 0 20px 0 !important;
+  color: var(--muted) !important;
+  text-align: center !important;
+  font-size: 14px !important;
+}
+
+.api-key-modal .form-group {
+  margin-bottom: 20px !important;
+}
+
+.api-key-modal label {
+  display: block !important;
+  margin-bottom: 8px !important;
+  font-weight: 600 !important;
+  color: var(--black) !important;
+  font-size: 14px !important;
+}
+
+.api-key-modal input,
+.api-key-modal select {
+  width: 100% !important;
+  padding: 12px !important;
+  border: 2px solid var(--line) !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  transition: border-color 0.3s ease !important;
+  box-sizing: border-box !important;
+}
+
+.api-key-modal input:focus,
+.api-key-modal select:focus {
+  outline: none !important;
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 3px rgba(43, 136, 216, 0.1) !important;
+}
+
+.api-key-modal small {
+  display: block !important;
+  margin-top: 5px !important;
+  color: var(--muted) !important;
+  font-size: 12px !important;
+}
+
+.api-key-modal .voice-selection {
+  margin-bottom: 20px !important;
+}
+
+.api-key-modal .form-actions {
+  display: flex !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  margin-bottom: 15px !important;
+}
+
+.api-key-modal .form-actions .btn {
+  flex: 1 !important;
+  min-width: 120px !important;
+  text-align: center !important;
+}
+
+.api-key-modal .api-info {
+  text-align: center !important;
+  padding: 15px !important;
+  background: var(--sand) !important;
+  border-radius: 8px !important;
+}
+
+.api-key-modal .api-info a {
+  color: var(--blue) !important;
+  text-decoration: none !important;
+}
+
+.api-key-modal .api-info a:hover {
+  text-decoration: underline !important;
+}
+
+/* Voice button styles */
+.voice-ai {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.voice-ai::before {
+  content: "🤖 ";
+}
+
+/* ElevenLabs speaking indicator */
+.elevenlabs-animation {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.elevenlabs-animation .ai-wave {
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(to top, #667eea, #764ba2);
+  border-radius: 2px;
+  animation: aiWave 1.2s ease-in-out infinite;
+}
+
+.elevenlabs-animation .ai-wave:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.elevenlabs-animation .ai-wave:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes aiWave {
+
+  0%,
+  100% {
+    height: 20px;
+    opacity: 1;
+  }
+
+  50% {
+    height: 8px;
+    opacity: 0.6;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .api-key-modal .api-key-form {
+    min-width: 280px !important;
+    max-width: 90vw !important;
+    padding: 20px !important;
+  }
+
+  .api-key-modal .form-actions {
+    flex-direction: column !important;
+  }
+
+  .api-key-modal .form-actions .btn {
+    width: 100% !important;
+    min-width: auto !important;
+  }
+}
+html,body{margin:0;overflow:hidden;scrollbar-width:none}*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent}</style></head>
+
+<body>
+  <div id="toastContainer"></div>
+  <div id="storyContainer"></div>
+
+  <!-- Optional SFX elements -->
+  
+  
+  
+  
+
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark">U+</div>
+      <div class="brand-text">
+        <h1>Umoja+ Lifeline</h1>
+        <p>Treat first, pay later · Transparent health funding</p>
+      </div>
+    </div>
+    <div class="user-badge">@bennhinn</div>
+    <div class="actions">
+      <button tabindex="-1" id="voiceToggle" class="btn outline voice-on">🔊 Voice On</button>
+      <button tabindex="-1" id="beforeAfterToggle" class="btn ghost">📊 Show Impact</button>
+      <button tabindex="-1" id="demoBtn" class="btn">▶ Demo Story</button>
+      <button tabindex="-1" id="resetBtn" class="btn outline">🔄 Reset</button>
+    </div>
+  </header>
+
+  <!-- Impact Banner -->
+  <div id="impactBanner" class="impact-banner hidden">
+    <div class="impact-stat">
+      <span class="impact-number" id="timeSaved">0</span>
+      <span class="impact-label">Minutes Saved</span>
+    </div>
+    <div class="impact-stat">
+      <span class="impact-number" id="moneySecured">0</span>
+      <span class="impact-label">KES Secured</span>
+    </div>
+    <div class="impact-stat">
+      <span class="impact-number" id="leakagePrevented">0</span>
+      <span class="impact-label">Leakage Blocked</span>
+    </div>
+    <div class="impact-stat">
+      <span class="impact-number" id="cashlessRate">0%</span>
+      <span class="impact-label">Cashless Intake</span>
+    </div>
+  </div>
+
+  <nav class="tabs">
+    <button tabindex="-1" class="tab" data-tab="ussd">📱 USSD Access</button>
+    <button tabindex="-1" class="tab active" data-tab="patient">🆘 Web SOS</button>
+    <button tabindex="-1" class="tab" data-tab="dispatcher">📋 Smart Dispatch</button>
+    <button tabindex="-1" class="tab" data-tab="responder">🚴 Responder</button>
+    <button tabindex="-1" class="tab" data-tab="provider">🏥 Provider Portal</button>
+    <button tabindex="-1" class="tab" data-tab="analytics">📈 Impact Dashboard</button>
+    <button tabindex="-1" class="tab" data-tab="ledger">🔗 Money Trail</button>
+  </nav>
+
+  <main>
+    <!-- USSD Simulator with better mobile mockup -->
+    <section id="ussd" class="view">
+      <div class="story-header">
+        <h2>📱 Universal Access</h2>
+        <p>Anyone can raise an SOS, even on basic phones without internet</p>
+      </div>
+
+      <div class="ussd-container">
+        <div class="mobile-mockup">
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="phone-status">MTN 📶 100% 🔋</div>
+              <div class="ussd-display" id="ussdDisplay">Dial *123*911# to start...</div>
+              <div class="phone-actions">
+                <button tabindex="-1" id="ussdSend" class="phone-btn">Call</button>
+                <button tabindex="-1" id="ussdEnd" class="phone-btn secondary">End</button>
+              </div>
+            </div>
+            <div class="phone-keypad">
+              <div class="keypad">
+                <div class="key">1</div>
+                <div class="key">2</div>
+                <div class="key">3</div>
+                <div class="key">4</div>
+                <div class="key">5</div>
+                <div class="key">6</div>
+                <div class="key">7</div>
+                <div class="key">8</div>
+                <div class="key">9</div>
+                <div class="key">*</div>
+                <div class="key">0</div>
+                <div class="key">#</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ussd-guide">
+          <h3>How USSD Works</h3>
+          <div class="ussd-steps">
+            <div class="ussd-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <strong>Dial *123*911#</strong>
+                <p>Works on any phone, no internet needed</p>
+              </div>
+            </div>
+            <div class="ussd-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <strong>Select Emergency Type</strong>
+                <p>Simple menu navigation</p>
+              </div>
+            </div>
+            <div class="ussd-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <strong>Instant Response</strong>
+                <p>Funds reserved, responder dispatched</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced Patient SOS -->
+    <section id="patient" class="view active">
+      <div class="story-header">
+        <h2>🆘 Raise Emergency SOS</h2>
+        <p>Simple form, instant fund reservation, no upfront payment required</p>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3>Emergency Details</h3>
+          <form id="sosForm">
+            <label>Emergency Type</label>
+            <div id="emergencyType" class="chips">
+              <span class="chip" data-val="Accident">🚑 Accident</span>
+              <span class="chip" data-val="Pregnancy">🤱 Pregnancy</span>
+              <span class="chip" data-val="Fever">🤒 Fever</span>
+              <span class="chip" data-val="Other">❓ Other</span>
+            </div>
+
+            <label>Severity Flags</label>
+            <div id="severityFlags" class="chips wrap">
+              <span class="chip" data-val="Unconscious">😵 Unconscious</span>
+              <span class="chip" data-val="Heavy bleeding">🩸 Heavy bleeding</span>
+              <span class="chip" data-val="Trouble breathing">🫁 Trouble breathing</span>
+              <span class="chip" data-val="Pregnant">🤰 Pregnant</span>
+              <span class="chip" data-val="Child under 5">👶 Child under 5</span>
+            </div>
+
+            <div class="row">
+              <div class="field-group">
+                <label for="landmark">Location/Landmark</label>
+                <input tabindex="-1" type="text" id="landmark" placeholder="e.g., Kisumu Rd junction">
+              </div>
+              <button tabindex="-1" type="button" id="useLocation" class="btn outline">📍 Use GPS</button>
+            </div>
+
+            <label for="msisdn">Phone Number</label>
+            <input tabindex="-1" type="tel" id="msisdn" placeholder="07xx xxx xxx">
+
+            <button tabindex="-1" type="submit" class="btn large">🆘 Send Emergency SOS</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3>💰 Emergency Wallet</h3>
+          <div id="walletPanel" class="hidden">
+            <div id="walletInfo"></div>
+            <div class="wallet-features">
+              <div class="feature">✅ No upfront payment</div>
+              <div class="feature">✅ Verified providers only</div>
+              <div class="feature">✅ Tamper-proof ledger</div>
+            </div>
+          </div>
+          <div id="noWallet" class="muted">Submit SOS to see fund reservation</div>
+
+          <!-- SMS Preview -->
+          <div id="smsPreview" class="sms-mockup hidden">
+            <div class="sms-header">📱 SMS Notification</div>
+            <div class="sms-body">
+              <strong>Umoja+ SOS Sent!</strong><br>
+              Ref: <span id="smsRef">----</span><br>
+              Funds reserved: KES <span id="smsAmount">----</span><br>
+              <strong>No upfront payment required.</strong><br>
+              Show this at clinic.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced Dispatcher -->
+    <section id="dispatcher" class="view">
+      <div class="story-header">
+        <h2>📋 Smart Emergency Dispatch</h2>
+        <p>Priority-based queue, nearest responder assignment, live ETA tracking</p>
+      </div>
+
+      <div class="grid three">
+        <div class="card">
+          <h3>🚨 Emergency Queue</h3>
+          <div class="queue-filters">
+            <button tabindex="-1" class="filter-btn active" data-filter="all">All</button>
+            <button tabindex="-1" class="filter-btn" data-filter="A">Priority A</button>
+            <button tabindex="-1" class="filter-btn" data-filter="NEW">New</button>
+          </div>
+          <ul id="queueList" class="list"></ul>
+        </div>
+
+        <div class="card">
+          <h3>👥 Available Responders</h3>
+          <div id="responderChips" class="responder-grid"></div>
+          <button tabindex="-1" id="assignBtn" class="btn" disabled>Assign Selected Responder</button>
+
+          <!-- Two-Stage Dispatch Option -->
+          <div id="twoStageOption" class="two-stage-option hidden">
+            <h4>🚴➡️🚐 Two-Stage Response</h4>
+            <p class="muted">For bad roads/long distances</p>
+            <button tabindex="-1" id="twoStageBtn" class="btn outline">Setup Two-Stage</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📍 Assignment Map &amp; Details</h3>
+          <svg id="assignmentMap" class="assignment-map" viewBox="0 0 100 100" />
+          <div id="caseDetails" class="case-details"></div>
+
+          <!-- Event Log -->
+          <h4 class="log-title">📋 Event Log</h4>
+          <ul id="eventLog" class="event-log"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced Responder -->
+    <section id="responder" class="view">
+      <div class="story-header">
+        <h2>🚴 Responder Dashboard</h2>
+        <p>Accept assignments, track progress, earn incentives for fast response</p>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3>📋 My Assignments</h3>
+          <div id="responderAssignments"></div>
+
+          <!-- Incentive Tracker -->
+          <div class="incentive-tracker">
+            <h4>💰 Today's Incentives</h4>
+            <div class="incentive-grid">
+              <div class="incentive-item">
+                <span class="incentive-amount">KES <span id="acceptBonus">0</span></span>
+                <span class="incentive-label">Accept Bonus</span>
+              </div>
+              <div class="incentive-item">
+                <span class="incentive-amount">KES <span id="arrivalBonus">0</span></span>
+                <span class="incentive-label">Arrival Bonus</span>
+              </div>
+              <div class="incentive-item">
+                <span class="incentive-amount">KES <span id="completeBonus">0</span></span>
+                <span class="incentive-label">Complete Bonus</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🛣️ Route &amp; Navigation</h3>
+          <div id="routeInfo" class="route-info">
+            <div class="route-stat">
+              <span class="route-label">Distance:</span>
+              <span id="routeDistance">--</span>
+            </div>
+            <div class="route-stat">
+              <span class="route-label">ETA:</span>
+              <span id="routeETA">--</span>
+            </div>
+            <div class="route-stat">
+              <span class="route-label">Road Quality:</span>
+              <span id="roadQuality">Good</span>
+            </div>
+          </div>
+
+          <!-- Road Status -->
+          <div class="road-status">
+            <h4>🛣️ Update Road Status</h4>
+            <button tabindex="-1" class="btn outline">🚧 Road Blocked</button>
+            <button tabindex="-1" class="btn outline">⚠️ Bad Condition</button>
+            <button tabindex="-1" class="btn outline">✅ Good</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced Provider -->
+    <section id="provider" class="view">
+      <div class="story-header">
+        <h2>🏥 Provider Portal</h2>
+        <p>Cashless intake, verified procedures, instant settlement</p>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3>🔍 Patient Lookup</h3>
+          <div class="lookup-section">
+            <label for="caseLookup">Case Reference</label>
+            <div class="row">
+              <input tabindex="-1" type="text" id="caseLookup" placeholder="Enter Ref (e.g., 7462)">
+              <button tabindex="-1" id="lookupBtn" class="btn">Look Up</button>
+            </div>
+          </div>
+
+          <!-- Admit on Reserve -->
+          <div id="admitSection" class="admit-section hidden">
+            <div class="funds-banner">
+              <div class="funds-icon">💰</div>
+              <div class="funds-content">
+                <div class="funds-title">FUNDS RESERVED</div>
+                <div class="funds-amount">KES <span id="reservedAmount">0</span></div>
+                <div class="funds-source">From: <span id="fundingSource">--</span></div>
+              </div>
+            </div>
+            <button tabindex="-1" id="admitBtn" class="btn large admit-btn">✅ Admit Patient (No Payment Required)</button>
+          </div>
+
+          <div id="encounterPanel"></div>
+        </div>
+
+        <div class="card">
+          <h3>💊 Treatment &amp; Claims</h3>
+          <div id="claimPanel"></div>
+
+          <h4>📋 Recent Claims</h4>
+          <table class="table" id="recentClaims">
+            <thead>
+              <tr>
+                <th>Ref</th>
+                <th>Provider</th>
+                <th>Procedures</th>
+                <th>Amount</th>
+                <th>Flags</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced Analytics -->
+    <section id="analytics" class="view">
+      <div class="story-header">
+        <h2>📈 Impact Dashboard</h2>
+        <p>Real-time KPIs, equity tracking, fraud detection</p>
+      </div>
+
+      <div class="grid four">
+        <div class="kpi-card">
+          <div class="kpi-icon">⚡</div>
+          <div class="kpi-content">
+            <div class="kpi-label">Avg Assignment Time</div>
+            <div id="kpiAssign" class="kpi-num">—</div>
+            <div class="kpi-target">Target: ≤3 min</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🎯</div>
+          <div class="kpi-content">
+            <div class="kpi-label">On-Time Arrivals</div>
+            <div id="kpiWithin" class="kpi-num">—</div>
+            <div class="kpi-target">Target: ≥80%</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🚨</div>
+          <div class="kpi-content">
+            <div class="kpi-label">Claims Flagged</div>
+            <div id="kpiFraud" class="kpi-num">—</div>
+            <div class="kpi-target">Target: ≤10%</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">⚖️</div>
+          <div class="kpi-content">
+            <div class="kpi-label">Ward Equity</div>
+            <div id="kpiVariance" class="kpi-num">—</div>
+            <div class="kpi-target">Target: &lt;20% variance</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <h3>🗺️ Equity Parity Map</h3>
+            <svg id="equityMap" class="equity-map" viewBox="0 0 100 100" />
+            <div id="equityTooltip" class="tooltip"></div>
+          </div>
+
+          <div class="card">
+            <h3>🚩 Anomaly Review Queue</h3>
+            <table class="table" id="anomalyTable">
+              <thead>
+                <tr>
+                  <th>Ref</th>
+                  <th>Provider</th>
+                  <th>Reason</th>
+                  <th>Amount</th>
+                  <th>Risk</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>💰 Funding Pools (Live Balances)</h3>
+          <div class="pools-grid">
+            <div id="poolsDisplay" class="pools-display"></div>
+          </div>
+          <table class="table" id="poolsTable">
+            <thead>
+              <tr>
+                <th>Pool</th>
+                <th>Balance (KES)</th>
+                <th>Rules</th>
+                <th>Usage Today</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="funding-note">
+            🎯 <strong>No insurance required.</strong> All care is funded from donor/charity/county/national pools.
+            Funds are reserved instantly on SOS to enable cashless intake.
+          </p>
+        </div>
+    </section>
+
+    <!-- Enhanced Ledger -->
+    <section id="ledger" class="view">
+      <div class="story-header">
+        <h2>🔗 Transparent Money Trail</h2>
+        <p>Immutable ledger, no silent reversals, full accountability</p>
+      </div>
+
+      <div class="card">
+        <div class="ledger-controls">
+          <button tabindex="-1" class="btn outline">📄 Export</button>
+          <button tabindex="-1" class="btn outline">🔐 Verify Chain</button>
+          <div class="ledger-search">
+            <input tabindex="-1" type="text" id="ledgerSearch" placeholder="Search by Ref...">
+            <button tabindex="-1" class="btn outline">🔍</button>
+          </div>
+        </div>
+
+        <table class="table" id="ledgerTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Type</th>
+              <th>Amount (KES)</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Ref</th>
+              <th>Hash</th>
+              <th>Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <div class="ledger-integrity">
+          <div class="integrity-badge verified">
+            <span class="integrity-icon">🔐</span>
+            <span class="integrity-text">Ledger Verified</span>
+          </div>
+          <p class="integrity-note">
+            All entries are cryptographically linked. No silent edits possible.
+            Corrections appear as new compensating entries.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div>"Dakika zinaokoa maisha." — Minutes that save lives.</div>
+    <div>Enhanced Prototype v2.0 · Treat first, pay later · Full transparency</div>
+  </footer>
+
+  
+  
+  
+</body>
+
+</html>

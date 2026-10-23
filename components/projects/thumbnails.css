@@ -1,0 +1,34 @@
+.website-thumbnail{display:block;position:relative;overflow:hidden;text-decoration:none;background:#eaf0f7;color:#405671;border-bottom:1px solid #72acd14a;isolation:isolate}
+.website-thumbnail-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;font:500 8px/1.4 'DM Sans',sans-serif;background:#eaf0f7;color:#4e647b;white-space:nowrap}
+.website-thumbnail-bar>span:nth-child(2){overflow:hidden;text-overflow:ellipsis}.website-window-dots{display:flex;gap:4px;flex:none}.website-window-dots i{display:block;width:5px;height:5px;background:#c0cdd9;border-radius:50%}.website-window-dots i:first-child{background:#eb99a7}.website-window-dots i:nth-child(2){background:#e9c779}.website-window-dots i:last-child{background:#83bdab}
+.website-thumbnail-viewport{position:relative;height:235px;overflow:hidden;pointer-events:none;background:#f0f4f8}
+.website-thumbnail-viewport iframe{display:block;position:absolute;top:0;left:0;width:300%;height:300%;max-width:none;border:0;transform:scale(.3333333333);transform-origin:top left;pointer-events:none}
+.website-thumbnail-youtube .website-thumbnail-viewport{background:#080b12}.website-thumbnail-youtube iframe{width:220%;height:220%;transform:scale(.4545454545)}
+.website-thumbnail-caption{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;font:500 9px/1.4 'DM Sans',sans-serif;background:#f5f8fb;color:#596c80}.website-thumbnail-caption span:last-child{color:#155a7f;transition:transform .2s ease}.website-thumbnail:hover .website-thumbnail-caption span:last-child{transform:translateX(3px)}
+.website-thumbnail:focus-visible{outline:3px solid #59daf7;outline-offset:-3px}
+.grid-project .project-source-link{font-size:11px;color:#bfe9fa;text-decoration:underline;text-underline-offset:4px}.grid-project .project-source-link:hover{color:white}.project-source-link:focus-visible{outline:2px solid #59daf7;outline-offset:4px}
+@media(max-width:560px){.website-thumbnail-viewport{height:245px}}
+@media(prefers-reduced-motion:reduce){.website-thumbnail-caption span:last-child{transition:none}.website-thumbnail:hover .website-thumbnail-caption span:last-child{transform:none}}
+
+.musehub-project-thumb{display:block;text-decoration:none;background:#1c112c;border-bottom:1px solid #cca0f333}.musehub-artwork-crop{display:block;position:relative;overflow:hidden;aspect-ratio:1056/641}.musehub-artwork-crop img{position:absolute;max-width:none;width:181.818182%;height:auto;left:-63.068182%;top:-36.973479%;display:block}.musehub-thumb-caption{display:flex;justify-content:space-between;gap:10px;padding:11px 14px;color:#dac2ea;font:500 9px/1.4 'DM Sans',sans-serif}.musehub-thumb-caption>span:last-child{color:#ffb2cb}.musehub-project-thumb:focus-visible{outline:3px solid #d5afff;outline-offset:-3px}.grid-project #project-musehub a{color:inherit;text-decoration:none}.grid-project #project-musehub a:hover{color:#ffb2cb}
+
+.relay-project-thumb{display:block;overflow:hidden;background:radial-gradient(ellipse at 5% 70%,#efdae3,transparent 55%),linear-gradient(135deg,#f5eee7,#d6e7dd);color:#365d4c;text-decoration:none;padding:17px 19px 0}.relay-thumb-brand{display:flex;justify-content:space-between;align-items:center;font:700 25px/1.2 Georgia,serif}.relay-thumb-brand small{font:600 8px/1.5 system-ui;letter-spacing:.12em}.relay-thumb-screens{display:flex;align-items:center;justify-content:center;gap:12px;height:198px;overflow:hidden;padding:13px 6px 0}.relay-thumb-screens img{width:30%;height:auto;max-height:224px;object-fit:contain;object-position:top;border-radius:11px;box-shadow:3px 8px 14px #3b5a482e}.relay-thumb-screens img:first-child{transform:translateY(16px) rotate(-6deg)}.relay-thumb-screens img:last-child{transform:translateY(16px) rotate(6deg)}.relay-thumb-caption{position:relative;display:flex;justify-content:space-between;gap:10px;margin:0 -19px;padding:11px 15px;background:#e9eee6;font:500 9px/1.5 system-ui}.relay-project-thumb:focus-visible{outline:3px solid #75bd9c;outline-offset:-3px}.grid-project #project-relay a{color:inherit}.grid-project #project-relay a:hover{color:#b7eed3}
+
+/* Seatly Aurora screenshot thumbnail; crop browser chrome using the display frame. */
+.seatly-project-thumb{display:block;align-self:center;min-width:0;overflow:hidden;border-radius:24px;background:#e9def6;color:#302048;text-decoration:none;border:1px solid rgba(255,255,255,.65);box-shadow:0 20px 60px rgba(91,55,145,.12);transition:transform .25s ease,box-shadow .25s ease}
+.seatly-artwork-crop{display:block;position:relative;aspect-ratio:1900/892;overflow:hidden}
+.seatly-artwork-crop img{position:absolute;display:block;width:101.052632%;max-width:none;height:auto;left:0;top:-12.107623%}
+.seatly-thumb-caption{display:flex;justify-content:space-between;gap:16px;padding:17px 20px;font-size:11px;font-weight:650;letter-spacing:.08em;background:rgba(255,255,255,.5)}
+.seatly-project-thumb:hover{transform:translateY(-4px);box-shadow:0 26px 65px rgba(91,55,145,.2)}
+.seatly-project-thumb:focus-visible{outline:3px solid #8054cd;outline-offset:5px}
+@media(max-width:600px){.seatly-thumb-caption{padding:14px 12px;font-size:9px;letter-spacing:.04em}}
+@media(prefers-reduced-motion:reduce){.seatly-project-thumb{transition:none}.seatly-project-thumb:hover{transform:none}}
+
+.umoja-care-thumb{display:block;overflow:hidden;text-decoration:none;color:#125458;background:#dff5ef}.umoja-care-thumb img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}.umoja-care-thumb>span{display:flex;justify-content:space-between;gap:12px;padding:15px;font-size:10px;letter-spacing:.05em}.umoja-care-thumb:focus-visible{outline:3px solid #059e90;outline-offset:3px}#project-umoja a{text-decoration:none;color:inherit}
+
+/* Shopokoa homepage screenshot, framed without browser controls. */
+.shopokoa-project-thumb{display:block;overflow:hidden;background:#f5fbf7;color:#075735;text-decoration:none}
+.shopokoa-artwork-crop{display:block;position:relative;overflow:hidden;aspect-ratio:1480/800}
+.shopokoa-artwork-crop img{position:absolute;display:block;width:129.72973%;max-width:none;height:auto;left:-13.513514%;top:-15.625%}
+.shopokoa-thumb-caption{display:flex;justify-content:space-between;gap:12px;padding:16px;font-size:10px;letter-spacing:.04em}
+.shopokoa-project-thumb:focus-visible{outline:3px solid #059e59;outline-offset:4px}
