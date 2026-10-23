@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import GlassKey from './GlassKey';
-// CSS is handled by the app bundler; TypeScript has no declaration for this side-effect import.
-// @ts-expect-error -- intentional stylesheet side-effect import
 import './HeroDepth.css';
 
 export type HeroProps = {
