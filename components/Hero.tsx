@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import GlassKey from './GlassKey';
-import './HeroDepth.css';
+import './HeroParallax.css';
+import { attachHeroParallax } from './hero-parallax';
 
 export type HeroProps = {
   splineScene?: string;
@@ -30,61 +31,24 @@ export default function Hero({ splineScene, contactHref = '#contact', cvUrl }: H
   }, [mobileOpen]);
 
   useEffect(() => {
-    const element = frame.current;
-    if (!element) return;
-    const enabled = window.matchMedia('(min-width: 851px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
-    let pending = 0;
-    let x = 0;
-    let y = 0;
-    const paint = () => {
-      pending = 0;
-      element.style.setProperty('--hero-depth-x', `${x * 5}px`);
-      element.style.setProperty('--hero-depth-y', `${y * 4}px`);
-      element.style.setProperty('--hero-light-x', `${65 + x * 7}%`);
-      element.style.setProperty('--hero-light-y', `${35 + y * 7}%`);
-    };
-    const reset = () => {
-      cancelAnimationFrame(pending);
-      pending = 0;
-      x = 0;
-      y = 0;
-      paint();
-    };
-    const move = (event: PointerEvent) => {
-      if (!enabled.matches || event.pointerType !== 'mouse') return;
-      const bounds = element.getBoundingClientRect();
-      x = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width - .5) * 2));
-      y = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height - .5) * 2));
-      if (!pending) pending = requestAnimationFrame(paint);
-    };
-    element.addEventListener('pointermove', move, { passive: true });
-    element.addEventListener('pointerleave', reset);
-    enabled.addEventListener('change', reset);
-    window.addEventListener('blur', reset);
-    return () => {
-      cancelAnimationFrame(pending);
-      element.removeEventListener('pointermove', move);
-      element.removeEventListener('pointerleave', reset);
-      enabled.removeEventListener('change', reset);
-      window.removeEventListener('blur', reset);
-      element.style.removeProperty('--hero-depth-x');
-      element.style.removeProperty('--hero-depth-y');
-      element.style.removeProperty('--hero-light-x');
-      element.style.removeProperty('--hero-light-y');
-    };
+    if (frame.current) return attachHeroParallax(frame.current);
   }, []);
 
   return (
-    <section id="home" className="hero hero--depth" aria-labelledby="hero-heading">
+    <section id="home" className="hero hero--depth hero--parallax" aria-labelledby="hero-heading">
       <div className="hero-frame" ref={frame}>
         <div className="mobile-scene-backdrop">
           <img className="mobile-scene-fill" src="/images/mobile-hero-reference.jpg" alt="" aria-hidden="true" />
           <img className="mobile-scene-portrait" src="/images/mobile-hero-reference.jpg" width="495" height="888" alt="Bennhinn Mwangi wearing sunglasses and headphones, surrounded by a luminous blue halo" fetchPriority="high" />
         </div>
-        <div className="hero-photo" role="img" aria-label="Cinematic portrait of Bennhinn framed by an electric-blue halo" />
-        <div className="hero-shine" aria-hidden="true" />
-        <div className="halo-breath" aria-hidden="true" />
-        <div className="hero-atmosphere" aria-hidden="true"><span /><span /></div>
+        <div className="hp-scene" aria-hidden="true">
+          <div className="hp-layer hp-background"><img src="/images/hero-layers/01-background.png" alt="" fetchPriority="high" /></div>
+          <div className="hp-layer hp-halo"><img src="/images/hero-layers/02-halo.png" alt="" /></div>
+          <div className="hp-layer hp-portrait"><img src="/images/hero-layers/03-portrait.png" alt="" fetchPriority="high" /></div>
+          <div className="hp-layer hp-trails"><img src="/images/hero-layers/04-light-trails.png" alt="" /></div>
+          <div className="hp-shade" />
+        </div>
+        <span className="hp-sr">Portrait of Bennhinn Mwangi wearing sunglasses, headphones and a navy blazer.</span>
 
         <header className="hero-header">
           <a className="brand" href="#home" aria-label="Bennhinn Mwangi, homepage">BM<span>.</span></a>
@@ -116,7 +80,7 @@ export default function Hero({ splineScene, contactHref = '#contact', cvUrl }: H
         </div>
 
         <div className="mobile-art" role="img" aria-label="Bennhinn wearing tinted glasses and headphones, with a luminous blue circular halo" />
-        <div className="orb" aria-hidden="true"><span className="orb-ring" /><span className="orb-satellite" /></div>
+
 
         <aside className="side-card hero-perspective" aria-labelledby="hero-perspective-heading">
           <div className="hero-perspective-label"><span aria-hidden="true" />Behind the work</div>
@@ -127,6 +91,7 @@ export default function Hero({ splineScene, contactHref = '#contact', cvUrl }: H
             <span>Timing. Space. Restraint.</span>
           </div>
         </aside>
+        <button type="button" className="hp-motion" data-hp-motion aria-pressed="false">Pause depth</button>
         <div className="scroll-note" aria-hidden="true">Scroll to explore ↓</div>
       </div>
     </section>
